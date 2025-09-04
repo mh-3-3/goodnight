@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bầu Trời Đêm Lấp Lánh</title>
+  <style>
+    :root {
+      --sky: #071a3c;
+      --sky-2: #0b2457;
+      --yellow: #ffd43b;
+      --string: rgba(255,255,255,0.65);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 60% at 50% -10%, var(--sky-2), var(--sky));
+      overflow: hidden;
+    }
+    /* chữ*/
+    .goodnight-text {
+    position: fixed;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6vw;                 /* 7% chiều rộng màn hình */
+    color: white;
+    font-family: "Times New Roman", serif; /* hoặc Romance nếu có */
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: .15em solid rgba(255,255,255,0.75); /* con trỏ gõ */
+    }
+    /* Lớp sao */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      box-shadow: 0 0 6px 1px rgba(255,255,255,0.8);
+      animation: twinkle var(--twinkleDur) linear infinite;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.1; transform: scale(0.7) translateZ(0); }
+      30% { opacity: 1; transform: scale(1.4) translateZ(0); }
+      60% { opacity: 0.2; transform: scale(0.8) translateZ(0); }
+      100% { opacity: 0.1; transform: scale(0.7) translateZ(0); }
+    }
+
+    /* Trăng và sao treo */
+    .hanger-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60vh;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .hanger {
+      position: absolute;
+      top: -8vh;
+      transform-origin: top center;
+      animation: sway var(--swayDur) ease-in-out infinite;
+    }
+    @keyframes sway {
+      0%   { transform: rotate(-4deg); }
+      50%  { transform: rotate(4deg); }
+      100% { transform: rotate(-4deg); }
+    }
+
+    .string {
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 2px; height: var(--stringLen);
+      background: linear-gradient(to bottom, var(--string), transparent 95%);
+    }
+
+    .moon, .smile-star {
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      margin-top: var(--stringLen);
+      filter: drop-shadow(0 0 10px rgba(255,212,59,0.5));
+    }
+
+    /* Overlay để làm mờ xung quanh */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 5;
+    }
+    .overlay.hidden {
+      display: none; /* Ẩn hẳn khi click */
+    }
+
+    .start-btn {
+      font-size: 5vw;               /* 5% chiều rộng màn hình */
+      padding: 0.5em 1em;
+      background: black;
+      color: white;
+      border: 2px solid white;      /* viền trắng */
+      border-radius: 30px;          /* bo tròn */
+      font-family: "Times New Roman", serif;
+      cursor: pointer;
+      transition: opacity 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <div class="hanger-wrap" aria-hidden="true">
+    <!-- Mặt trăng to hơn gấp rưỡi -->
+    <div class="hanger" style="left: 18%; --swayDur: 6.5s; --stringLen: 18vh; --size: 225px;">
+      <div class="string"></div>
+      <svg class="moon" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gmoon" cx="40%" cy="35%" r="70%">
+            <stop offset="0%" stop-color="#fff7a1"/>
+            <stop offset="100%" stop-color="#f7c948"/>
+          </radialGradient>
+        </defs>
+        <g>
+          <path d="M85 100a50 50 0 1 1 0-80a40 40 0 1 0 0 80z" fill="url(#gmoon)"/>
+          <circle cx="18" cy="62" r="3" fill="#7a5200"/>
+          <circle cx="33" cy="60" r="3" fill="#7a5200"/>
+          <path d="M15 80q15 12 25 -5" fill="none" stroke="#7a5200" stroke-width="3" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Sao treo 1 -->
+    <div class="hanger" style="left: 48%; --swayDur: 5.5s; --stringLen: 22vh; --size: 80px; animation-delay: 0.4s;">
+      <div class="string"></div>
+      <svg class="smile-star" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gstar1" cx="50%" cy="45%" r="60%">
+            <stop offset="0%" stop-color="#fff4a8"/>
+            <stop offset="100%" stop-color="#ffd43b"/>
+          </radialGradient>
+        </defs>
+        <g fill="url(#gstar1)">
+          <path d="M50 5l12 30l32 3l-24 20l8 31l-28-17l-28 17l8-31l-24-20l32-3z"/>
+        </g>
+        <circle cx="42" cy="46" r="3" fill="#7a5200"/>
+        <circle cx="58" cy="46" r="3" fill="#7a5200"/>
+        <path d="M40 58q10 8 20 0" fill="none" stroke="#7a5200" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Sao treo 2 -->
+    <div class="hanger" style="left: 68%; --swayDur: 7.2s; --stringLen: 26vh; --size: 100px; animation-delay: -0.3s;">
+      <div class="string"></div>
+      <svg class="smile-star" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gstar2" cx="50%" cy="45%" r="60%">
+            <stop offset="0%" stop-color="#fff4a8"/>
+            <stop offset="100%" stop-color="#ffd43b"/>
+          </radialGradient>
+        </defs>
+        <g fill="url(#gstar2)">
+          <path d="M50 5l12 30l32 3l-24 20l8 31l-28-17l-28 17l8-31l-24-20l32-3z"/>
+        </g>
+        <circle cx="42" cy="46" r="3" fill="#7a5200"/>
+        <circle cx="58" cy="46" r="3" fill="#7a5200"/>
+        <path d="M40 58q10 8 20 0" fill="none" stroke="#7a5200" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Sao treo 3 -->
+    <div class="hanger" style="left: 82%; --swayDur: 6.5s; --stringLen: 20vh; --size: 70px; animation-delay: 0.6s;">
+      <div class="string"></div>
+      <svg class="smile-star" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gstar3" cx="50%" cy="45%" r="60%">
+            <stop offset="0%" stop-color="#fff4a8"/>
+            <stop offset="100%" stop-color="#ffd43b"/>
+          </radialGradient>
+        </defs>
+        <g fill="url(#gstar3)">
+          <path d="M50 5l12 30l32 3l-24 20l8 31l-28-17l-28 17l8-31l-24-20l32-3z"/>
+        </g>
+        <circle cx="42" cy="46" r="3" fill="#7a5200"/>
+        <circle cx="58" cy="46" r="3" fill="#7a5200"/>
+        <path d="M40 58q10 8 20 0" fill="none" stroke="#7a5200" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Overlay với nút Bấm vào đây -->
+  <div class="overlay" id="overlay">
+    <button class="start-btn" id="startBtn">Bấm vào đây</button>
+  </div>
+    <div class="goodnight-text" id="goodnightText"></div>
+  <audio id="bgm" src="noinaycoanh.mp3" preload="auto" loop></audio>
+
+  <script>
+    // Tạo sao lấp lánh
+    (function makeStars() {
+      const container = document.getElementById('stars');
+      const { innerWidth: W, innerHeight: H } = window;
+      const count = Math.min(500, Math.floor((W * H) / 3000));
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() < 0.2 ? 3 : 2;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.top = Math.random() * 100 + 'vh';
+        const dur = (1 + Math.random() * 1.5).toFixed(2) + 's';
+        const delay = (-Math.random() * 2).toFixed(2) + 's';
+        s.style.setProperty('--twinkleDur', dur);
+        s.style.animationDelay = delay;
+        frag.appendChild(s);
+      }
+      container.appendChild(frag);
+    })();
+
+    // Điều khiển nút và nhạc
+    const audio = document.getElementById('bgm');
+    const overlay = document.getElementById('overlay');
+    const startBtn = document.getElementById('startBtn');
+
+    startBtn.addEventListener('click', async () => {
+      try {
+        await audio.play();
+      } catch (e) {
+        console.error("Không phát được nhạc:", e);
+      }
+      overlay.classList.add('hidden'); // ẩn overlay hẳn
+    // Sau khi overlay biến mất, chạy chữ
+    const text = "Chúc em ngủ ngon";
+    const goodnightEl = document.getElementById('goodnightText');
+    let i = 0;
+    function typeEffect() {
+        if (i < text.length) {
+          goodnightEl.textContent += text.charAt(i);
+          i++;
+          setTimeout(typeEffect, 180); // tốc độ gõ chữ
+        } else {
+          goodnightEl.style.borderRight = "none"; // bỏ con trỏ sau khi gõ xong
+        }
+      }
+      setTimeout(typeEffect, 800); // delay một chút sau khi màn hình rõ
+    });
+  </script>
+</body>
+</html>
